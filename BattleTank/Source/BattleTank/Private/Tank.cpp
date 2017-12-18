@@ -15,6 +15,17 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AController *c = GetController();
+	if (c)
+	{
+
+		UE_LOG(LogTemp, Warning, TEXT("Tank %s has controller %s."), *GetName(), *c->GetName());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tank %s has no controller."), *GetName());
+	}
 	
 }
 
