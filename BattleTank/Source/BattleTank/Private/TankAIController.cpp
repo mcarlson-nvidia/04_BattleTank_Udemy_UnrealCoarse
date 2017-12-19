@@ -6,18 +6,16 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	ATank* t = GetPlayerTank();
-	if (t)
+void ATankAIController::Tick(float DeltaSeconds)
+{
+	ATank* player = GetPlayerTank();
+	ATank* me = Cast<ATank>(GetPawn());
+	if (player && me)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Tank %s found player %s."), *GetPawn()->GetName(), *t->GetName());
+		me->AimAt(player->GetActorLocation());
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Controller %s can't find the player tank."), *GetName());
-	}
-	
-
 }
 
 ATank* ATankAIController::GetPlayerTank()
