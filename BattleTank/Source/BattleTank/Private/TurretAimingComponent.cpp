@@ -65,10 +65,16 @@ void UTurretAimingComponent::AimAt(const FVector& Location, float LaunchSpeed)
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 
+	float Time = GetWorld()->GetTimeSeconds();
 	if (bHaveAimSolution)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("%f Aim found."), Time);
 		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrel(AimDirection);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%f Aim NOT found."), Time);
 	}
 }
 

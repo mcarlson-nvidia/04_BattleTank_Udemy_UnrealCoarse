@@ -5,8 +5,7 @@
 
 
 
-void UBarrelMeshComponent::Elevate(float DegreesPerSecond)
+void UBarrelMeshComponent::Elevate(float RelativeSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s Aiming At %f."), *GetOwner()->GetName(), DegreesPerSecond);
 
 }
