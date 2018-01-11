@@ -12,7 +12,7 @@ UTurretAimingComponent::UTurretAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
 }
@@ -61,31 +61,24 @@ void UTurretAimingComponent::AimAt(const FVector& Location, float LaunchSpeed)
 		LaunchSpeed,
 		false,
 		0.0f,
-		false,
+		0.0f,
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
-
-	float Time = GetWorld()->GetTimeSeconds();
-	if (bHaveAimSolution)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%f Aim found."), Time);
-		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
-		MoveBarrel(AimDirection);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%f Aim NOT found."), Time);
-	}
+	
+	FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
+	MoveTurretAndBarrel(AimDirection, bHaveAimSolution);
 }
 
-void UTurretAimingComponent::MoveBarrel(const FVector &AimDirection)
+void UTurretAimingComponent::MoveTurretAndBarrel(const FVector &AimDirection, bool DoElevate /*= true*/)
 {
-	if (!Barrel) return;
+	if (!Barrel || !Turret) return;
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimDirectionRotator = AimDirection.Rotation();
 	FRotator DeltaRotation = AimDirectionRotator - BarrelRotator;
 
-	Barrel->Elevate(5.0f);// TODO remove magic number
+	if (DoElevate) Barrel->Elevate(DeltaRotation.Pitch);
+	Turret->Swivel(DeltaRotation.Yaw);
+
 
 }
 

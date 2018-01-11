@@ -14,7 +14,12 @@ class BATTLETANK_API UTurretMeshComponent : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 	
-	
-	
+public:
+	// -1 is max Left, and +1 is Right movement
+	void Swivel(float RelativeSpeed);
+
+private:
+	UPROPERTY(EditAnywhere, Category = TurretAiming)
+	float MaxDegreesPerSecond = 25;
 	
 };

@@ -20,7 +20,7 @@ public:
 	
 private:
 	UPROPERTY(EditAnywhere, Category = TurretAiming)
-	float MaxDegreesPerSecond = 20;
+	float MaxDegreesPerSecond = 10;
 
 	UPROPERTY(EditAnywhere, Category = TurretAiming)
 	FVector2D ElevationRange = FVector2D(-5.f,45.f);

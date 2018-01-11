@@ -33,5 +33,5 @@ private:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 100000;
+	float LaunchSpeed = 4000;
 };

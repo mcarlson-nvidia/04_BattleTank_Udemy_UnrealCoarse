@@ -34,5 +34,5 @@ public:
 private:
 	UBarrelMeshComponent *Barrel = nullptr;
 	UTurretMeshComponent *Turret = nullptr;
-	void MoveBarrel(const FVector &AimDirection);
+	void MoveTurretAndBarrel(const FVector &AimDirection, bool DoElevate = true);
 };
