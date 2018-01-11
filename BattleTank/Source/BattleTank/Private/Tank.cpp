@@ -46,10 +46,11 @@ void ATank::Fire()
 {
 	if (Barrel)
 	{
-		GetWorld()->SpawnActor<AProjectile>(
+		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Opening")),
 			Barrel->GetSocketRotation(FName("Opening")));
+		Projectile->LaunchProjectile(LaunchSpeed);
 	}
 }
 

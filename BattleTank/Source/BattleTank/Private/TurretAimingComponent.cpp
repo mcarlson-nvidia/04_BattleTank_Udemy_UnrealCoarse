@@ -65,8 +65,11 @@ void UTurretAimingComponent::AimAt(const FVector& Location, float LaunchSpeed)
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 	
-	FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
-	MoveTurretAndBarrel(AimDirection, bHaveAimSolution);
+	if (bHaveAimSolution)
+	{
+		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
+		MoveTurretAndBarrel(AimDirection, true);
+	}
 }
 
 void UTurretAimingComponent::MoveTurretAndBarrel(const FVector &AimDirection, bool DoElevate /*= true*/)

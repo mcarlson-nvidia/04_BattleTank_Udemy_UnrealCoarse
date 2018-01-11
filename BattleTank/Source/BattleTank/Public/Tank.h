@@ -6,8 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-class UTurretAimingComponent;
 class UBarrelMeshComponent;
+class UTurretAimingComponent;
 class UTurretMeshComponent;
 class AProjectile;
 
