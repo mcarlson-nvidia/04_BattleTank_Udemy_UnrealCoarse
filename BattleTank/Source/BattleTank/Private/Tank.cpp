@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
-
+#include "Projectile.h"
+#include "BarrelMeshComponent.h"
 #include "TurretAimingComponent.h"
 
 // Sets default values
@@ -27,6 +28,7 @@ void ATank::BeginPlay()
 
 void ATank::SetBarrel(UBarrelMeshComponent* BarrelToSet)
 {
+	Barrel = BarrelToSet;
 	TurretAimingComponent->SetBarrel(BarrelToSet);
 }
 
@@ -42,6 +44,12 @@ void ATank::AimAt(const FVector& Location)
 
 void ATank::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Tank Fired."));
+	if (Barrel)
+	{
+		GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Opening")),
+			Barrel->GetSocketRotation(FName("Opening")));
+	}
 }
 
