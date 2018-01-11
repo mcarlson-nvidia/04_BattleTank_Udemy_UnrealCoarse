@@ -18,21 +18,11 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 
 	AController *c = GetController();
-	if (c)
-	{
-
-		UE_LOG(LogTemp, Warning, TEXT("Tank %s has controller %s."), *GetName(), *c->GetName());
-	}
-	else
+	if (!c)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Tank %s has no controller."), *GetName());
 	}
 	
-}
-
-void ATank::AimAt(const FVector& Location)
-{
-	TurretAimingComponent->AimAt(Location, LaunchSpeed);
 }
 
 void ATank::SetBarrel(UBarrelMeshComponent* BarrelToSet)
@@ -43,5 +33,15 @@ void ATank::SetBarrel(UBarrelMeshComponent* BarrelToSet)
 void ATank::SetTurret(UTurretMeshComponent* TurretToSet)
 {
 	TurretAimingComponent->SetTurret(TurretToSet);
+}
+
+void ATank::AimAt(const FVector& Location)
+{
+	TurretAimingComponent->AimAt(Location, LaunchSpeed);
+}
+
+void ATank::Fire()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Tank Fired."));
 }
 
