@@ -3,6 +3,7 @@
 #include "Tank.h"
 #include "Projectile.h"
 #include "BarrelMeshComponent.h"
+#include "TankMovementComponent.h"
 #include "TurretAimingComponent.h"
 
 // Sets default values
