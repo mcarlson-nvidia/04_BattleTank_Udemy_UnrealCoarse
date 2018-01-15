@@ -15,6 +15,7 @@ void ATankAIController::Tick(float DeltaSeconds)
 	if (player && me)
 	{
 		me->AimAt(player->GetActorLocation());
+		me->Fire();
 	}
 }
 

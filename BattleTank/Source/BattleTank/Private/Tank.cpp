@@ -46,11 +46,18 @@ void ATank::Fire()
 {
 	if (Barrel)
 	{
-		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
-			ProjectileBlueprint,
-			Barrel->GetSocketLocation(FName("Opening")),
-			Barrel->GetSocketRotation(FName("Opening")));
-		Projectile->LaunchProjectile(LaunchSpeed);
+		double curTime = FPlatformTime::Seconds();
+		bool isReloaded = (curTime - LastFireTime) > ReloadTimeInSeconds;
+
+		if (isReloaded)
+		{
+			LastFireTime = curTime;
+			AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
+				ProjectileBlueprint,
+				Barrel->GetSocketLocation(FName("Opening")),
+				Barrel->GetSocketRotation(FName("Opening")));
+			if (Projectile) Projectile->LaunchProjectile(LaunchSpeed);
+		}
 	}
 }
 
