@@ -19,7 +19,7 @@ public:
 	void Swivel(float RelativeSpeed);
 
 private:
-	UPROPERTY(EditAnywhere, Category = TurretAiming)
+	UPROPERTY(EditDefaultsOnly, Category = TurretAiming)
 	float MaxDegreesPerSecond = 25;
 	
 };
