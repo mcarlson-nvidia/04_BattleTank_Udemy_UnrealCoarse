@@ -45,6 +45,7 @@ void ATank::AimAt(const FVector& Location)
 
 void ATank::Fire()
 {
+	//UE_LOG(LogTemp, Warning, TEXT("Tank %s Fired 1"), *GetName());
 	if (Barrel)
 	{
 		double curTime = FPlatformTime::Seconds();
@@ -52,12 +53,20 @@ void ATank::Fire()
 
 		if (isReloaded)
 		{
+		UE_LOG(LogTemp, Warning, TEXT("Tank %s Fired 2 %f %f %f"), *GetName(), curTime,LastFireTime,ReloadTimeInSeconds);
+
+			//UE_LOG(LogTemp, Warning, TEXT("Tank %s Fired 3"), *GetName());
 			LastFireTime = curTime;
 			AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
 				ProjectileBlueprint,
 				Barrel->GetSocketLocation(FName("Opening")),
 				Barrel->GetSocketRotation(FName("Opening")));
-			if (Projectile) Projectile->LaunchProjectile(LaunchSpeed);
+			if (Projectile)
+			{
+
+				UE_LOG(LogTemp, Warning, TEXT("Tank %s Fired 4"), *GetName());
+				Projectile->LaunchProjectile(LaunchSpeed);
+			}
 		}
 	}
 }
