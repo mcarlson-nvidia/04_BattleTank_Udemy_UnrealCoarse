@@ -9,6 +9,14 @@
 class UBarrelMeshComponent;
 class UTurretMeshComponent;
 
+UENUM()
+enum class EFiringState : uint8
+{
+	Reloading,
+	Aiming,
+	Locked
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTurretAimingComponent : public UActorComponent
 {
@@ -22,6 +30,9 @@ public:
 	void SetTurret(UTurretMeshComponent* TurretToSet);
 
 protected:
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EFiringState FiringState = EFiringState::Reloading;
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
@@ -34,5 +45,7 @@ public:
 private:
 	UBarrelMeshComponent *Barrel = nullptr;
 	UTurretMeshComponent *Turret = nullptr;
+
 	void MoveTurretAndBarrel(const FVector &AimDirection, bool DoElevate = true);
+
 };
