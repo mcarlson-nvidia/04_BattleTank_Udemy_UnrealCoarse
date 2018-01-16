@@ -31,4 +31,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 
 	float intentDotActual = FVector::DotProduct(TankForward, AIForwardIntent);
 	IntendMoveForward(intentDotActual);
+
+	float intentCrossActualZ = FVector::CrossProduct(AIForwardIntent, TankForward).Z;
+	IntendTurnRight(-intentCrossActualZ);
 }
