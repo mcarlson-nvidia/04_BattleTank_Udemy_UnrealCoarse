@@ -26,6 +26,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void IntendTurnRight(float Throw);// control throw
+
+	// UNavMovementComponent override
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
 	
 private:
 	UTrackMeshComponent *LeftTrack = nullptr;
