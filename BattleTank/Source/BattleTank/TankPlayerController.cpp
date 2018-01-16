@@ -5,10 +5,20 @@
 #include "CollisionQueryParams.h"
 #include "DrawDebugHelpers.h"
 #include "Tank.h"
+#include "TurretAimingComponent.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	UTurretAimingComponent *AimingComp = GetControlledTank()->FindComponentByClass<UTurretAimingComponent>();
+	if (AimingComp)
+	{
+		FoundAimingComponent(AimingComp);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ATankPlayerController::BeginPlay can't find aiming component."));
+	}
 
 }
 

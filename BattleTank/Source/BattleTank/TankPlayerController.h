@@ -7,8 +7,10 @@
 #include "TankPlayerController.generated.h"
 
 class ATank;
+class UTurretAimingComponent;
+
 /**
- * 
+ * Helps the player aim and move.
  */
 UCLASS()
 class BATTLETANK_API ATankPlayerController : public APlayerController
@@ -22,6 +24,9 @@ public:
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank *GetControlledTank() const;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UTurretAimingComponent* AimCompRef);
 
 private:
 	void AimTowardCrosshairs();
