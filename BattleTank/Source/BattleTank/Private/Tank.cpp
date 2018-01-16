@@ -9,15 +9,17 @@
 // Sets default values
 ATank::ATank()
 {
+
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY Construct C++"));
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	TurretAimingComponent = CreateDefaultSubobject<UTurretAimingComponent>(FName("Aiming Component"));
 }
 
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY BeginPlay C++"));
 
 	AController *c = GetController();
 	if (!c)
@@ -27,20 +29,9 @@ void ATank::BeginPlay()
 	
 }
 
-void ATank::SetBarrel(UBarrelMeshComponent* BarrelToSet)
-{
-	Barrel = BarrelToSet;
-	TurretAimingComponent->SetBarrel(BarrelToSet);
-}
-
-void ATank::SetTurret(UTurretMeshComponent* TurretToSet)
-{
-	TurretAimingComponent->SetTurret(TurretToSet);
-}
-
 void ATank::AimAt(const FVector& Location)
 {
-	TurretAimingComponent->AimAt(Location, LaunchSpeed);
+	if (TurretAimingComponent) TurretAimingComponent->AimAt(Location, LaunchSpeed);
 }
 
 void ATank::Fire()

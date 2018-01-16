@@ -19,11 +19,6 @@ class BATTLETANK_API ATank : public APawn
 
 public:
 
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetBarrel(UBarrelMeshComponent* BarrelToSet);
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetTurret(UTurretMeshComponent* TurretToSet);
-
 	void AimAt(const FVector& Location);
 	
 	UFUNCTION(BlueprintCallable)
@@ -35,6 +30,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Setup")
 	UTankMovementComponent *TankMovementComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Setup")
+	UBarrelMeshComponent * Barrel = nullptr;
 
 private:	
 	// Sets default values for this pawn's properties
@@ -52,6 +50,5 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 3;
 
-	UBarrelMeshComponent * Barrel = nullptr;
 	double LastFireTime = 0;
 };

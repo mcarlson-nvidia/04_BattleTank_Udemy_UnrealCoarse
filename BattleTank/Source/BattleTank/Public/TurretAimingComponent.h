@@ -26,8 +26,8 @@ public:
 	// Sets default values for this component's properties
 	UTurretAimingComponent();
 
-	void SetBarrel(UBarrelMeshComponent* BarrelToSet);
-	void SetTurret(UTurretMeshComponent* TurretToSet);
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialize(UBarrelMeshComponent* BarrelToSet, UTurretMeshComponent* TurretToSet);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")

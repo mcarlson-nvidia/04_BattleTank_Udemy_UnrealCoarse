@@ -18,13 +18,9 @@ UTurretAimingComponent::UTurretAimingComponent()
 }
 
 
-void UTurretAimingComponent::SetBarrel(UBarrelMeshComponent* BarrelToSet)
+void UTurretAimingComponent::Initialize(UBarrelMeshComponent* BarrelToSet, UTurretMeshComponent* TurretToSet)
 {
 	Barrel = BarrelToSet;
-}
-
-void UTurretAimingComponent::SetTurret(UTurretMeshComponent* TurretToSet)
-{
 	Turret = TurretToSet;
 }
 
