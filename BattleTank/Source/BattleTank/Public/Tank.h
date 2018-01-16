@@ -19,9 +19,9 @@ class BATTLETANK_API ATank : public APawn
 
 public:
 
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetBarrel(UBarrelMeshComponent* BarrelToSet);
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetTurret(UTurretMeshComponent* TurretToSet);
 
 	void AimAt(const FVector& Location);
@@ -30,9 +30,10 @@ public:
 	void Fire();
 
 protected:
+	UPROPERTY(BlueprintReadOnly, Category = "Setup")
 	UTurretAimingComponent* TurretAimingComponent = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	UPROPERTY(BlueprintReadOnly, Category = "Setup")
 	UTankMovementComponent *TankMovementComponent = nullptr;
 
 private:	
@@ -42,13 +43,13 @@ private:
 	virtual void BeginPlay() override;
 
 
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<AProjectile> ProjectileBlueprint = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 4000;
 
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 3;
 
 	UBarrelMeshComponent * Barrel = nullptr;

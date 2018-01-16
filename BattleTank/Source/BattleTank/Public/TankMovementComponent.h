@@ -18,19 +18,19 @@ class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
 	
 public:
 
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTrackMeshComponent* LeftTrackToSet, UTrackMeshComponent *RightTrackToSet); // need to call this in BP because we didn't add an inherited component.
 
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void IntendMoveForward(float Throw);// control throw
 
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void IntendTurnRight(float Throw);// control throw
-
-	// UNavMovementComponent override
-	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
 	
 private:
+	// UNavMovementComponent override
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
 	UTrackMeshComponent *LeftTrack = nullptr;
 	UTrackMeshComponent *RightTrack = nullptr;
 };

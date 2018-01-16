@@ -19,9 +19,9 @@ public:
 	void Elevate(float RelativeSpeed);
 	
 private:
-	UPROPERTY(EditDefaultsOnly, Category = TurretAiming)
+	UPROPERTY(EditDefaultsOnly, Category = "TurretAiming")
 	float MaxDegreesPerSecond = 10;
 
-	UPROPERTY(EditDefaultsOnly, Category = TurretAiming)
+	UPROPERTY(EditDefaultsOnly, Category = "TurretAiming")
 	FVector2D ElevationRange = FVector2D(-5.f,45.f);
 };

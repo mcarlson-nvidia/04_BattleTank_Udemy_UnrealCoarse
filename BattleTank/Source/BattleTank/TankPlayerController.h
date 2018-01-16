@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
+class ATank;
 /**
  * 
  */
@@ -17,6 +18,10 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	ATank *GetControlledTank() const;
 
 private:
 	void AimTowardCrosshairs();

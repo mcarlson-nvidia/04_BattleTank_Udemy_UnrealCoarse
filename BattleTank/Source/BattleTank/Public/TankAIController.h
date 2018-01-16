@@ -22,7 +22,7 @@ private:
 	ATank* GetPlayerTank();
 
 	// How close the AI tank can get
-	UPROPERTY(EditDefaultsOnly, Category = Navigation)
+	UPROPERTY(EditDefaultsOnly, Category = "Navigation")
 	float AcceptanceRadius = 3000; // tank 40k, and 1g acceleration (seems wrong)
 
 };
