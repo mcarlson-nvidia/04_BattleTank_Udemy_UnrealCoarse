@@ -40,7 +40,11 @@ void UTurretAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	bool isReloading = (FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds;
-	if (isReloading)
+	if (RoundsLeft <= 0)
+	{
+		FiringState = EFiringState::OutOfAmmo;
+	}
+	else if (isReloading)
 	{
 		FiringState = EFiringState::Reloading;
 	}
@@ -88,7 +92,16 @@ void UTurretAimingComponent::MoveTurretAndBarrel(const FVector &AimDirection, bo
 	FRotator DeltaRotation = AimDirectionRotator - BarrelRotator;
 
 	if (DoElevate) Barrel->Elevate(DeltaRotation.Pitch);
-	Turret->Swivel(DeltaRotation.Yaw);
+	// always yaw the shortest way...
+	if (DeltaRotation.Yaw < 180)
+	{
+		Turret->Swivel(DeltaRotation.Yaw);
+	}
+	else
+	{
+		Turret->Swivel(-DeltaRotation.Yaw);
+	}
+
 
 
 }
@@ -102,7 +115,7 @@ bool UTurretAimingComponent::IsBarrelMoving()
 
 void UTurretAimingComponent::Fire()
 {
-	if (FiringState != EFiringState::Reloading) // TODO Other States
+	if (FiringState == EFiringState::Locked || FiringState == EFiringState::Aiming) // TODO Other States
 	{
 		if (!ensure(Barrel)) return;
 		if (!ensure(ProjectileBlueprint)) return;
@@ -115,6 +128,17 @@ void UTurretAimingComponent::Fire()
 		if (ensure(Projectile))
 		{
 			Projectile->LaunchProjectile(LaunchSpeed);
+			RoundsLeft = FMath::Max(0, RoundsLeft -1);
 		}
 	}
+}
+
+EFiringState UTurretAimingComponent::GetFiringState() const
+{
+	return FiringState;
+}
+
+int32 UTurretAimingComponent::GetRoundsLeft() const
+{
+	return RoundsLeft;
 }

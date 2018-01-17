@@ -10,14 +10,21 @@ void ATankAIController::BeginPlay()
 
 void ATankAIController::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
 	APawn* player = GetWorld()->GetFirstPlayerController()->GetPawn();
 	APawn* me = GetPawn();
 	if (ensure(player && me))
 	{
 		MoveToActor(player, AcceptanceRadius);
 		UTurretAimingComponent *AimingComponent = me->FindComponentByClass<UTurretAimingComponent>();
-		AimingComponent->AimAt(player->GetActorLocation());
-		AimingComponent->Fire();
+		if (ensure(AimingComponent))
+		{
+			AimingComponent->AimAt(player->GetActorLocation());
+			if (AimingComponent->GetFiringState() == EFiringState::Locked)
+			{
+				AimingComponent->Fire();
+			}
+		}
 	}
 }
 

@@ -33,7 +33,8 @@ void ATankPlayerController::AimTowardCrosshairs()
 	UTurretAimingComponent *AimingComp = GetPawn()->FindComponentByClass<UTurretAimingComponent>();
 	if (!ensure(AimingComp)) return;
 	FVector HitLocation;
-	if (GetSightRayHitLocation(HitLocation))
+	bool bGotHitLocation = GetSightRayHitLocation(HitLocation);
+	if (bGotHitLocation)
 	{
 		AimingComp->AimAt(HitLocation);
 	}
@@ -46,17 +47,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
 	FVector2D ScreenLocation = FVector2D(ViewportSizeX, ViewportSizeY) * CrosshairLocation;
-#if 0
-	FHitResult HitResult;
-	bool bHit = GetHitResultAtScreenPosition(ScreenLocation, ECollisionChannel::ECC_Visibility, false, HitResult);
-	if (bHit)
-	{
-		OutHitLocation = HitResult.ImpactPoint;
-		// Draws a red line for debugging purposes
-		DrawDebugLine(GetWorld(), HitResult.TraceStart, HitResult.TraceEnd, FColor::Red);
-	}
-	return bHit;
-#else
+
 	FVector LookDirection;
 	FVector CameraWorldLocation;
 	if (DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, LookDirection))
@@ -64,7 +55,6 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 		return GetLookVectorHitLocation(CameraWorldLocation, LookDirection, OutHitLocation);
 	}
 	return false;
-#endif
 }
 
 bool ATankPlayerController::GetLookVectorHitLocation(const FVector& Start, const FVector& Direction, FVector& OutHitLocation) const
@@ -77,6 +67,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(const FVector& Start, const
 	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECollisionChannel::ECC_Visibility, Params))
 	{
 		OutHitLocation = OutHit.Location;
+		return true;
 	}
-	return true;
+	return false;
 }
