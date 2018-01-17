@@ -39,9 +39,19 @@ void UTurretAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	bool isReloading = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-	if (isReloading) FiringState = EFiringState::Reloading;
-	/// TODO Handle other states.
+	bool isReloading = (FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds;
+	if (isReloading)
+	{
+		FiringState = EFiringState::Reloading;
+	}
+	else if (IsBarrelMoving())
+	{
+		FiringState = EFiringState::Aiming;
+	}
+	else
+	{
+		FiringState = EFiringState::Locked;
+	}
 }
 
 void UTurretAimingComponent::AimAt(const FVector& Location)
@@ -65,7 +75,7 @@ void UTurretAimingComponent::AimAt(const FVector& Location)
 	
 	if (bHaveAimSolution)
 	{
-		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
+		AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveTurretAndBarrel(AimDirection, true);
 	}
 }
@@ -81,6 +91,13 @@ void UTurretAimingComponent::MoveTurretAndBarrel(const FVector &AimDirection, bo
 	Turret->Swivel(DeltaRotation.Yaw);
 
 
+}
+
+bool UTurretAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(Barrel)) { return false; }
+	FVector BarrelForward = Barrel->GetForwardVector();
+	return !BarrelForward.Equals(AimDirection, 0.01); // vectors are equal
 }
 
 void UTurretAimingComponent::Fire()

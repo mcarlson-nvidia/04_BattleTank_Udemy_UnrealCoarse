@@ -62,4 +62,7 @@ private:
 	float ReloadTimeInSeconds = 3;
 
 	double LastFireTime = 0;
+	bool IsBarrelMoving();
+
+	FVector AimDirection = FVector::ForwardVector;
 };

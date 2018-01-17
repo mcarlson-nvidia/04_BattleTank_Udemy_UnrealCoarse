@@ -29,6 +29,7 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 
 void ATankPlayerController::AimTowardCrosshairs()
 {
+	if (!GetPawn()) return;
 	UTurretAimingComponent *AimingComp = GetPawn()->FindComponentByClass<UTurretAimingComponent>();
 	if (!ensure(AimingComp)) return;
 	FVector HitLocation;
