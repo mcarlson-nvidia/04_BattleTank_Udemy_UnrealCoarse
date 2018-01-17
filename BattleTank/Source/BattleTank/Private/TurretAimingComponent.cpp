@@ -12,8 +12,8 @@ UTurretAimingComponent::UTurretAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
-
+	PrimaryComponentTick.bCanEverTick = true;
+	LastFireTime = FPlatformTime::Seconds();
 	// ...
 }
 
@@ -39,7 +39,9 @@ void UTurretAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	bool isReloading = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+	if (isReloading) FiringState = EFiringState::Reloading;
+	/// TODO Handle other states.
 }
 
 void UTurretAimingComponent::AimAt(const FVector& Location)
@@ -83,14 +85,12 @@ void UTurretAimingComponent::MoveTurretAndBarrel(const FVector &AimDirection, bo
 
 void UTurretAimingComponent::Fire()
 {
-	if (!ensure(Barrel && ProjectileBlueprint)) return;
-	double curTime = FPlatformTime::Seconds();
-	bool isReloaded = (curTime - LastFireTime) > ReloadTimeInSeconds;
-
-	if (isReloaded)
+	if (FiringState != EFiringState::Reloading) // TODO Other States
 	{
+		if (!ensure(Barrel)) return;
+		if (!ensure(ProjectileBlueprint)) return;
 		//UE_LOG(LogTemp, Warning, TEXT("Tank %s Fired 3"), *GetName());
-		LastFireTime = curTime;
+		LastFireTime = FPlatformTime::Seconds();
 		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Opening")),

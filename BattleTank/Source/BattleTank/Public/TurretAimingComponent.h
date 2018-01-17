@@ -32,7 +32,7 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringState FiringState = EFiringState::Locked;
+	EFiringState FiringState = EFiringState::Reloading;
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
