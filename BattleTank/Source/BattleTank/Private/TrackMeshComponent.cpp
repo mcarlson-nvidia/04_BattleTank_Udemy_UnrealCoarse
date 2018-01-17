@@ -14,7 +14,7 @@ void UTrackMeshComponent::SetThrottle(float Throttle)
 	FVector ForceLocation = GetComponentLocation(); // center lower of track.
 
 	UPrimitiveComponent *Tank = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
-	if (Tank)
+	if (ensure(Tank))
 	{
 		Tank->AddForceAtLocation(ForceApplied, ForceLocation);
 	}

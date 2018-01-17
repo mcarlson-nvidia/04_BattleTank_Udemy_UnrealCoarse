@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TurretAimingComponent.h"
-
 #include "BarrelMeshComponent.h"
+#include "Projectile.h"
 #include "TurretMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -42,9 +42,9 @@ void UTurretAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
-void UTurretAimingComponent::AimAt(const FVector& Location, float LaunchSpeed)
+void UTurretAimingComponent::AimAt(const FVector& Location)
 {
-	if (!Barrel || !Turret) return;
+	if (!ensure(Barrel && Turret)) return;
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Opening"));
 	// Calculate out launch velocity
@@ -70,7 +70,7 @@ void UTurretAimingComponent::AimAt(const FVector& Location, float LaunchSpeed)
 
 void UTurretAimingComponent::MoveTurretAndBarrel(const FVector &AimDirection, bool DoElevate /*= true*/)
 {
-	if (!Barrel || !Turret) return;
+	if (!ensure(Barrel && Turret)) return;
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimDirectionRotator = AimDirection.Rotation();
 	FRotator DeltaRotation = AimDirectionRotator - BarrelRotator;
@@ -81,3 +81,23 @@ void UTurretAimingComponent::MoveTurretAndBarrel(const FVector &AimDirection, bo
 
 }
 
+void UTurretAimingComponent::Fire()
+{
+	if (!ensure(Barrel && ProjectileBlueprint)) return;
+	double curTime = FPlatformTime::Seconds();
+	bool isReloaded = (curTime - LastFireTime) > ReloadTimeInSeconds;
+
+	if (isReloaded)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Tank %s Fired 3"), *GetName());
+		LastFireTime = curTime;
+		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Opening")),
+			Barrel->GetSocketRotation(FName("Opening")));
+		if (ensure(Projectile))
+		{
+			Projectile->LaunchProjectile(LaunchSpeed);
+		}
+	}
+}

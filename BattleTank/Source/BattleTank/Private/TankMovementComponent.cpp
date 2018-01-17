@@ -13,14 +13,14 @@ void UTankMovementComponent::Initialize(UTrackMeshComponent* LeftTrackToSet, UTr
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
-	if (LeftTrack) LeftTrack->SetThrottle(Throw);
-	if (RightTrack) RightTrack->SetThrottle(Throw);
+	if (ensure(LeftTrack)) LeftTrack->SetThrottle(Throw);
+	if (ensure(RightTrack)) RightTrack->SetThrottle(Throw);
 }
 
 void UTankMovementComponent::IntendTurnRight(float Throw)
 {
-	if (LeftTrack) LeftTrack->SetThrottle(Throw);
-	if (RightTrack) RightTrack->SetThrottle(-Throw);
+	if (ensure(LeftTrack)) LeftTrack->SetThrottle(Throw);
+	if (ensure(RightTrack)) RightTrack->SetThrottle(-Throw);
 }
 
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)

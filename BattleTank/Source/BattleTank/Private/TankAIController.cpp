@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAIController.h"
-#include "Tank.h"
+#include "TurretAimingComponent.h"
 
 void ATankAIController::BeginPlay()
 {
@@ -10,18 +10,14 @@ void ATankAIController::BeginPlay()
 
 void ATankAIController::Tick(float DeltaSeconds)
 {
-	ATank* player = GetPlayerTank();
-	ATank* me = Cast<ATank>(GetPawn());
-	if (player && me)
+	APawn* player = GetWorld()->GetFirstPlayerController()->GetPawn();
+	APawn* me = GetPawn();
+	if (ensure(player && me))
 	{
 		MoveToActor(player, AcceptanceRadius);
-		me->AimAt(player->GetActorLocation());
-		me->Fire();
+		UTurretAimingComponent *AimingComponent = me->FindComponentByClass<UTurretAimingComponent>();
+		AimingComponent->AimAt(player->GetActorLocation());
+		AimingComponent->Fire();
 	}
-}
-
-ATank* ATankAIController::GetPlayerTank()
-{
-	return Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 }
 

@@ -4,14 +4,13 @@
 
 #include "CollisionQueryParams.h"
 #include "DrawDebugHelpers.h"
-#include "Tank.h"
 #include "TurretAimingComponent.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	UTurretAimingComponent *AimingComp = GetControlledTank()->FindComponentByClass<UTurretAimingComponent>();
-	if (AimingComp)
+	UTurretAimingComponent *AimingComp = GetPawn()->FindComponentByClass<UTurretAimingComponent>();
+	if (ensure(AimingComp))
 	{
 		FoundAimingComponent(AimingComp);
 	}
@@ -28,19 +27,14 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 	AimTowardCrosshairs();
 }
 
-ATank * ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
 void ATankPlayerController::AimTowardCrosshairs()
-{	
-	ATank* t = GetControlledTank();
-	if (!t) return;
+{
+	UTurretAimingComponent *AimingComp = GetPawn()->FindComponentByClass<UTurretAimingComponent>();
+	if (!ensure(AimingComp)) return;
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		t->AimAt(HitLocation);
+		AimingComp->AimAt(HitLocation);
 	}
 
 }

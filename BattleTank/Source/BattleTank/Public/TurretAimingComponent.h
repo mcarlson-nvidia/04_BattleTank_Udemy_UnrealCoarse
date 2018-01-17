@@ -7,6 +7,7 @@
 #include "TurretAimingComponent.generated.h"
 
 class UBarrelMeshComponent;
+class AProjectile;
 class UTurretMeshComponent;
 
 UENUM()
@@ -40,12 +41,25 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void AimAt(const FVector& Location, float LaunchSpeed);		
+	void AimAt(const FVector& Location);
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	void Fire();
 
 private:
 	UBarrelMeshComponent *Barrel = nullptr;
 	UTurretMeshComponent *Turret = nullptr;
 
 	void MoveTurretAndBarrel(const FVector &AimDirection, bool DoElevate = true);
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	TSubclassOf<AProjectile> ProjectileBlueprint = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float LaunchSpeed = 4000;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float ReloadTimeInSeconds = 3;
+
+	double LastFireTime = 0;
 };
