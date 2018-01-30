@@ -93,7 +93,7 @@ void UTurretAimingComponent::MoveTurretAndBarrel(const FVector &AimDirection, bo
 
 	if (DoElevate) Barrel->Elevate(DeltaRotation.Pitch);
 	// always yaw the shortest way...
-	if (DeltaRotation.Yaw < 180)
+	if (FMath::Abs(DeltaRotation.Yaw) < 180)
 	{
 		Turret->Swivel(DeltaRotation.Yaw);
 	}
