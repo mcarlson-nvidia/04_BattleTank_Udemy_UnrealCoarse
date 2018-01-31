@@ -3,6 +3,7 @@
 #include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 
@@ -55,6 +56,12 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	// seems like a strange way to do this, but it works?
 	SetRootComponent(ImpactBlast);
 	CollisionMesh->DestroyComponent();
+
+	// damage enemy tank
+	UGameplayStatics::ApplyRadialDamage(
+		this, ProjectileDamage, GetActorLocation(), ExplosiveForce->Radius,
+		UDamageType::StaticClass(), TArray<AActor*>() // damage all actors
+	);
 	FTimerHandle Timer;
 	GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay, false);
 }
