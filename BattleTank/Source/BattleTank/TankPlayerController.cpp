@@ -44,6 +44,7 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 
 void ATankPlayerController::OnPlayerTankDeath()
 {
+	StartSpectatingOnly();
 	UE_LOG(LogTemp, Warning, TEXT("ATankPlayerController::Received death"));
 }
 
@@ -84,7 +85,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(const FVector& Start, const
 	OutHitLocation = End;
 	FCollisionQueryParams Params = FCollisionQueryParams::DefaultQueryParam;
 	Params.AddIgnoredActor(GetPawn());
-	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECollisionChannel::ECC_Visibility, Params))
+	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECollisionChannel::ECC_Camera, Params))
 	{
 		OutHitLocation = OutHit.Location;
 		return true;

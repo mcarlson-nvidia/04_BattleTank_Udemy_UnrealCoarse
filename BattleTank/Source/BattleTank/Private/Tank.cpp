@@ -13,6 +13,7 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+	CurrentHealth = StartingHelth;
 	AController *c = GetController();
 	if (!ensure(c))
 	{

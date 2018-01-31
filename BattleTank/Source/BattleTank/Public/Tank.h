@@ -23,7 +23,7 @@ private:
 	int32 StartingHelth = 100;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Health")
-	int32 CurrentHealth = StartingHelth;
+	int32 CurrentHealth = 0;
 
 public:
 	FTankDelegate OnDeath;
