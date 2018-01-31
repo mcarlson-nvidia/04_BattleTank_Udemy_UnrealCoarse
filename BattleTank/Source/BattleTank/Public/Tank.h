@@ -25,4 +25,8 @@ private:
 public:
 	// APawn
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	// returns current health between 0 and 1 as pct of starting health.  blueprintpure is like a const function for BP, no executuion pins...
+	UFUNCTION(BlueprintPure)
+	float GetHealthPercent() const;
 };
