@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
+
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -22,11 +24,13 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	int32 CurrentHealth = StartingHelth;
+
 public:
+	FTankDelegate OnDeath;
 	// APawn
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	// returns current health between 0 and 1 as pct of starting health.  blueprintpure is like a const function for BP, no executuion pins...
-	UFUNCTION(BlueprintPure)
+	UFUNCTION(BlueprintPure, Category = "Health")
 	float GetHealthPercent() const;
 };

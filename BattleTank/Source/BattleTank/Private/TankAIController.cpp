@@ -1,11 +1,26 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAIController.h"
+#include "Tank.h"
 #include "TurretAimingComponent.h"
 
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn)
+	{
+		ATank* PossessedTank = Cast<ATank>(InPawn);
+		if (ensure(PossessedTank))
+		{
+			PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossessedTankDeath);
+		}
+	}
 }
 
 void ATankAIController::Tick(float DeltaSeconds)
@@ -26,5 +41,11 @@ void ATankAIController::Tick(float DeltaSeconds)
 			}
 		}
 	}
+}
+
+void ATankAIController::OnPossessedTankDeath()
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("ATankAIController::Received death"));
 }
 

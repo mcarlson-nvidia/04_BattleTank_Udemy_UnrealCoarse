@@ -4,6 +4,7 @@
 
 #include "CollisionQueryParams.h"
 #include "DrawDebugHelpers.h"
+#include "Tank.h"
 #include "TurretAimingComponent.h"
 
 void ATankPlayerController::BeginPlay()
@@ -21,10 +22,29 @@ void ATankPlayerController::BeginPlay()
 
 }
 
+void ATankPlayerController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn)
+	{
+		ATank* PossessedTank = Cast<ATank>(InPawn);
+		if (ensure(PossessedTank))
+		{
+			PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPlayerTankDeath);
+		}
+	}
+}
+
 void ATankPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	AimTowardCrosshairs();
+}
+
+void ATankPlayerController::OnPlayerTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("ATankPlayerController::Received death"));
 }
 
 void ATankPlayerController::AimTowardCrosshairs()
